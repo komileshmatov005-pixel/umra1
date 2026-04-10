@@ -2,191 +2,134 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ziyorat Taklifnomasi</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@400;600&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Montserrat:wght@300;400;600&family=Noto+Serif+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    
     <style>
-        :root { --gold: #c5a059; --text: #1a1a1a; }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow-x: hidden; font-family: 'Montserrat', sans-serif; background: #000; scroll-behavior: smooth; }
+        :root { --gold: #d4af37; --text: #1a1a1a; --bg: #fcfaf2; }
+        body, html { margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; scroll-behavior: smooth; }
 
-        /* INTRO */
-        #intro-step { position: fixed; top: 0; left: 0; width: 100%; height: 100dvh; background: url('step_intro.jpg') no-repeat center; background-size: cover; z-index: 10005; display: flex; justify-content: center; align-items: flex-end; transition: 2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
-        #intro-step.zoom-out { transform: scale(5); opacity: 0; pointer-events: none; }
-        .start-btn { margin-bottom: 60px; background: rgba(255,255,255,0.9); padding: 15px 35px; border-radius: 50px; font-family: 'Cinzel'; color: var(--gold); border: 2px solid var(--gold); animation: pulse 2s infinite; font-weight: bold; }
-        @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.05);} 100% {transform: scale(1);} }
+        /* KONVERT */
+        #envelope-wrapper {
+            position: fixed; inset: 0; background: #fff; z-index: 9999;
+            display: flex; justify-content: center; align-items: center;
+            transition: 1.5s cubic-bezier(0.8, 0, 0.2, 1);
+        }
+        .seal-circle {
+            width: 150px; height: 150px; border: 2px solid var(--gold);
+            border-radius: 50%; padding: 10px; cursor: pointer;
+            display: flex; justify-content: center; align-items: center;
+            animation: pulse 3s infinite;
+        }
+        .seal-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 
-        /* DARVOZA */
-        #gate-container { position: fixed; top: 0; left: 0; width: 100%; height: 100dvh; z-index: 10000; display: flex; opacity: 0; transition: 1s; }
-        .gate-half { width: 50%; height: 100%; background: url('1000126404.jpg') no-repeat; background-size: 200% 100%; transition: 1.8s cubic-bezier(0.7, 0, 0.3, 1); }
-        .left-gate { background-position: left; border-right: 1px solid var(--gold); }
-        .right-gate { background-position: right; border-left: 1px solid var(--gold); }
-        .opened .left-gate { transform: translateX(-105%); }
-        .opened .right-gate { transform: translateX(105%); }
+        /* ASOSIY SAHIFA */
+        #main-content { display: none; text-align: center; }
+        .card { max-width: 500px; margin: 30px auto; background: #fff; padding: 40px 20px; border: 1px solid rgba(212, 175, 55, 0.2); }
+        .names { font-family: 'Cinzel Decorative'; font-size: 1.8rem; margin: 15px 0; }
 
-        /* ASOSIY CONTENT */
-        #main-content { display: none; padding: 20px 15px 60px; background: linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)), url('fon.jpg'); background-size: cover; background-attachment: fixed; min-height: 100%; }
-        .main-card { max-width: 450px; margin: 0 auto; background: #fff; border: 1px solid var(--gold); border-radius: 80px 80px 20px 20px; padding: 40px 20px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.05); }
-        .profile-img { width: 180px; height: 180px; border-radius: 50%; border: 3px solid var(--gold); object-fit: cover; margin-bottom: 25px; }
+        /* TAYMER */
+        .timer-grid { display: flex; justify-content: center; gap: 15px; margin: 20px 0; }
+        .t-item { background: #fff; border: 1px solid var(--gold); padding: 10px; min-width: 65px; }
+        .t-item span { display: block; font-size: 1.4rem; font-weight: bold; color: var(--gold); }
+        .t-item small { font-size: 0.7rem; text-transform: uppercase; }
 
-        /* SWIPER */
-        .swiper { width: 100%; height: 260px; margin: 25px 0; border-radius: 15px; border: 1px solid var(--gold); }
-        .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
-        .swiper-pagination-bullet-active { background: var(--gold) !important; }
+        /* SLAYDER GALEREYA */
+        .swiper { width: 100%; max-width: 500px; height: 350px; margin: 40px auto; }
+        .swiper-slide img { width: 100%; height: 100%; object-fit: cover; border: 5px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 
-        .date-box { display: flex; justify-content: space-around; border-top: 1px solid #eee; border-bottom: 1px solid #eee; margin: 30px 0; padding: 20px 0; }
-        .t-unit { background: #1a1a1a; color: #fff; width: 60px; height: 65px; border-radius: 12px; display: flex; flex-direction: column; justify-content: center; border: 1px solid var(--gold); margin: 0 5px; }
-        
-        .btn { background: linear-gradient(45deg, #c5a059, #f9f1b0, #c5a059); color: #000; padding: 16px; border-radius: 30px; display: block; text-decoration: none; font-weight: bold; width: 100%; border: none; cursor: pointer; margin-top: 20px; }
-        .input-field { width: 100%; padding: 15px; border-radius: 30px; border: 1px solid #ddd; margin-top: 10px; text-align: center; box-sizing: border-box; }
-        .lang-toggle { position: fixed; top: 15px; left: 15px; z-index: 10010; background: #fff; border: 1px solid var(--gold); padding: 8px 15px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .btn-map { display: inline-block; padding: 15px 30px; background: var(--gold); color: #fff; text-decoration: none; margin-top: 15px; font-weight: bold; letter-spacing: 1px; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
     </style>
 </head>
 <body>
 
-    <button class="lang-toggle" onclick="changeLang()" id="langBtn">ЎЗБ (Крилл)</button>
-
-    <div id="intro-step" onclick="startJourney()">
-        <div class="start-btn" id="startTxt">SAYOHATNI BOSHLASH</div>
-    </div>
-
-    <div id="gate-container">
-        <div class="gate-half left-gate"></div>
-        <div class="gate-half right-gate"></div>
+    <div id="envelope-wrapper">
+        <div class="seal-circle" onclick="start()">
+            <img src="seal.png" alt="Muhr"> 
+        </div>
+        <p style="position: absolute; bottom: 20%; color: var(--gold); letter-spacing: 3px; font-weight: bold;">LUTFAN OCHING</p>
     </div>
 
     <div id="main-content">
-        <div class="main-card">
-            <img src="bobo_buvi.jpg" class="profile-img" data-aos="zoom-in">
-            <p id="salom" style="color: var(--gold); font-weight: bold; letter-spacing: 3px;">ASSALOMU ALAYKUM</p>
-            <h1 id="names" style="font-family: 'Cinzel'; font-size: 1.5rem;" data-aos="fade-up">RAIM BOBO & <br> HOJI ONAMIZ</h1>
-            <p id="descr" style="font-size: 0.9rem; font-style: italic; color: #555;">Ziyoratdan qaytgan azizlarimiz sharafiga yozilgan ehson dasturxonimizga lutfan taklif etamiz.</p>
-
-            <div class="swiper mySwiper" data-aos="fade-up">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide"><img src="gal1.jpg"></div>
-                    <div class="swiper-slide"><img src="gal2.jpg"></div>
-                    <div class="swiper-slide"><img src="gal3.jpg"></div>
-                    <div class="swiper-slide"><img src="gal4.jpg"></div>
-                </div>
-                <div class="swiper-pagination"></div>
-            </div>
-
-            <div class="date-box" data-aos="fade-right">
-                <div class="date-item"><span id="s_label">SANA</span><br><b style="font-size:1.8rem;">27</b><br><span id="m_label">DEKABR</span></div>
-                <div class="date-item"><span id="v_label">VAQT</span><br><b style="font-size:1.8rem;">12:00</b><br><span id="d_label">YAKSHANBA</span></div>
-            </div>
-
-            <p id="t_label" style="font-weight: bold; font-size: 0.7rem;">TADBIRGACHA QOLDI:</p>
-            <div class="timer" style="display: flex; justify-content: center;" data-aos="zoom-in">
-                <div class="t-unit"><span id="d">00</span><small id="d_t">Kun</small></div>
-                <div class="t-unit"><span id="h">00</span><small id="h_t">Soat</small></div>
-                <div class="t-unit"><span id="m">00</span><small id="m_t">Min</small></div>
-            </div>
-
-            <h2 id="loc_title" style="font-family: 'Cinzel'; color: var(--gold); font-size: 1.1rem; margin-top: 40px;">MANZILIMIZ</h2>
-            <img src="restoran.jpg" style="width: 100%; border-radius: 15px;" data-aos="fade-up">
-            <p><b>"IDEAL SS" RESTORANI</b></p>
-            <a href="https://maps.google.com" class="btn" id="map_btn">XARITANI KO'RISH</a>
-
-            <div style="margin-top: 40px;" data-aos="fade-up">
-                <p id="rsvp_txt" style="font-size: 0.8rem;">Tashrifingizni tasdiqlang:</p>
-                <input type="text" id="nameInp" placeholder="Ismingiz" class="input-field">
-                <button class="btn" onclick="sendData()" id="send_btn">TASDIQLASH</button>
-            </div>
-
-            <div style="text-align: center; margin-top: 30px;" data-aos="zoom-in">
-                <img src="tasbeh.png" style="width: 70px; opacity: 0.5;" onerror="this.style.display='none'">
-            </div>
-            <p id="footer_txt" style="font-family: 'Playfair Display'; font-size: 1.5rem; color: var(--gold);">Sizni kutib qolamiz!</p>
+        
+        <div class="card" data-aos="fade-up">
+            <div style="color: var(--gold); margin-bottom: 20px; font-size: 1.2rem;">Bismillahir Rohmanir Rohim</div>
+            <img src="1000126481.jpg" style="width: 180px; border-radius: 50%; border: 3px solid var(--gold);" alt="Duo">
+            <h1 class="names">RAIM BOBO VA <br> HOJI ONAMIZ</h1>
+            <p style="font-style: italic; line-height: 1.8; color: #555;">
+                "Allohning inoyati ila muqaddas Umra safarlarini ado etib qaytgan qadrdonlarimiz sharafiga yoziladigan dasturxonimiz uzra siz azizlarni kutib qolamiz."
+            </p>
         </div>
+
+        <div class="card" data-aos="fade-up">
+            <img src="restoran.jpg" style="width: 100%; border-radius: 5px;" alt="Ideal SS">
+            <h3 class="names" style="font-size: 1.3rem;">"IDEAL SS" SAROYI</h3>
+            <p style="margin: 5px 0;">Sho'rchi tumani, Surxondaryo</p>
+            <p style="font-weight: bold; color: var(--gold);">27-DEKABR | SOAT 12:00 DA</p>
+            <a href="https://maps.google.com" class="btn-map" target="_blank">GOOGLE XARITADAN KO'RISH</a>
+        </div>
+
+        <div class="card" data-aos="zoom-in">
+            <p style="letter-spacing: 2px; font-size: 0.8rem; color: #999;">MAROSIMGAGCHA QOLDI:</p>
+            <div class="timer-grid">
+                <div class="t-item"><span id="days">00</span><small>Kun</small></div>
+                <div class="t-item"><span id="hours">00</span><small>Soat</small></div>
+                <div class="t-item"><span id="mins">00</span><small>Daqiqa</small></div>
+            </div>
+        </div>
+
+        <div class="swiper mySwiper" data-aos="fade-up">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><img src="gal1.jpg"></div>
+                <div class="swiper-slide"><img src="gal2.jpg"></div>
+                <div class="swiper-slide"><img src="gal3.jpg"></div>
+                <div class="swiper-slide"><img src="gal4.jpg"></div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+
+        <img src="makka_bg.jpg" style="width: 100%; max-width: 500px; border-top: 4px solid var(--gold);" alt="Makka">
+
+        <h2 class="names" style="color: var(--gold); padding: 50px 0; letter-spacing: 3px;">SIZNI KUTIB QOLAMIZ</h2>
     </div>
 
-    <audio id="muzika" loop preload="auto"><source src="music.mp3" type="audio/mpeg"></audio>
+    <audio id="muzika" loop><source src="music.mp3" type="audio/mpeg"></audio>
 
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
     <script>
-        let isLat = true;
-        const scriptURL = 'BU_YERGA_O_Z_URL_MANZILINGIZNI_QO_YING'; 
+        function start() {
+            document.getElementById('envelope-wrapper').style.transform = 'translateY(-100vh)';
+            document.getElementById('main-content').style.display = 'block';
+            document.getElementById('muzika').play().catch(e => {});
+            
+            AOS.init({ duration: 1200, once: true });
 
-        function startJourney() {
-            document.getElementById('intro-step').classList.add('zoom-out');
-            document.getElementById('muzika').play().catch(e => console.log("Audio xatosi:", e));
-            setTimeout(() => {
-                const gate = document.getElementById('gate-container');
-                gate.style.opacity = '1';
-                setTimeout(() => {
-                    gate.classList.add('opened');
-                    setTimeout(() => {
-                        document.getElementById('main-content').style.display = 'block';
-                        document.body.style.overflow = 'auto';
-                        AOS.init({ duration: 1000, once: true });
-                        new Swiper(".mySwiper", { loop: true, pagination: { el: ".swiper-pagination", clickable: true }, autoplay: { delay: 3000 } });
-                        setInterval(updateTimer, 1000);
-                        setTimeout(() => { gate.style.display = 'none'; }, 2000);
-                    }, 1000);
-                }, 800);
-            }, 800);
+            // Slayderni ishga tushirish
+            new Swiper(".mySwiper", {
+                effect: "cards",
+                grabCursor: true,
+                pagination: { el: ".swiper-pagination", clickable: true },
+            });
+
+            setInterval(updateTimer, 1000);
         }
 
         function updateTimer() {
-            const diff = new Date("December 27, 2026 12:00:00").getTime() - new Date().getTime();
-            if(diff > 0) {
-                document.getElementById('d').innerText = Math.floor(diff / (1000*60*60*24));
-                document.getElementById('h').innerText = Math.floor((diff / (1000*60*60)) % 24);
-                document.getElementById('m').innerText = Math.floor((diff / 1000 / 60) % 60);
+            const target = new Date("December 27, 2026 12:00:00").getTime();
+            const now = new Date().getTime();
+            const diff = target - now;
+            if (diff > 0) {
+                document.getElementById('days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+                document.getElementById('hours').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                document.getElementById('mins').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             }
-        }
-
-        function changeLang() {
-            isLat = !isLat;
-            const btn = document.getElementById('langBtn');
-            btn.innerText = isLat ? "ЎЗБ (Крилл)" : "UZB (Lotin)";
-
-            const content = {
-                lat: {
-                    start: "SAYOHATNI BOSHLASH", salom: "ASSALOMU ALAYKUM", desc: "Ziyoratdan qaytgan azizlarimiz sharafiga yozilgan ehson dasturxonimizga lutfan taklif etamiz.",
-                    sana: "SANA", oy: "DEKABR", vaqt: "VAQT", kun: "YAKSHANBA", qoldi: "TADBIRGACHA QOLDI:", d: "Kun", h: "Soat", m: "Min",
-                    loc: "MANZILIMIZ", map: "XARITANI KO'RISH", rsvp: "Tashrifingizni tasdiqlang:", inp: "Ismingiz", send: "TASDIQLASH", footer: "Sizni kutib qolamiz!"
-                },
-                kir: {
-                    start: "САЁҲАТНИ БОШЛАШ", salom: "АССАЛОМУ АЛАЙКУМ", desc: "Зиёратдан қайтган азизларимиз шарафига ёзилган эҳсон дастурхонимизга лутфан таклиф этамиз.",
-                    sana: "САНА", oy: "ДЕКАБРЬ", vaqt: "ВАҚТ", kun: "ЯКШАНБА", qoldi: "ТАДБИРГАЧА ҚОЛДИ:", d: "Кун", h: "Соат", m: "Мин",
-                    loc: "МАНЗИЛИМИЗ", map: "ХАРИТАНИ КЎРИШ", rsvp: "Ташрифингизни тасдиқланг:", inp: "Исмингиз", send: "ТАСДИҚЛАШ", footer: "Сизни кутиб қоламиз!"
-                }
-            };
-
-            const l = isLat ? content.lat : content.kir;
-            document.getElementById('startTxt').innerText = l.start;
-            document.getElementById('salom').innerText = l.salom;
-            document.getElementById('descr').innerText = l.desc;
-            document.getElementById('s_label').innerText = l.sana;
-            document.getElementById('m_label').innerText = l.oy;
-            document.getElementById('v_label').innerText = l.vaqt;
-            document.getElementById('d_label').innerText = l.kun;
-            document.getElementById('t_label').innerText = l.qoldi;
-            document.getElementById('d_t').innerText = l.d;
-            document.getElementById('h_t').innerText = l.h;
-            document.getElementById('m_t').innerText = l.m;
-            document.getElementById('loc_title').innerText = l.loc;
-            document.getElementById('map_btn').innerText = l.map;
-            document.getElementById('rsvp_txt').innerText = l.rsvp;
-            document.getElementById('nameInp').placeholder = l.inp;
-            document.getElementById('send_btn').innerText = l.send;
-            document.getElementById('footer_txt').innerText = l.footer;
-        }
-
-        function sendData() {
-            const name = document.getElementById('nameInp').value;
-            if(!name) return alert(isLat ? "Ismingizni kiriting" : "Исмингизни киритинг");
-            const btn = document.getElementById('send_btn');
-            btn.innerText = isLat ? "YUBORILMOQDA..." : "ЮБОРИЛМОҚДА...";
-            fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ ism: name, vaqt: new Date().toLocaleString() }) })
-            .then(() => { alert(isLat ? "Rahmat!" : "Раҳмат!"); btn.innerText = isLat ? "TASDIQLASH" : "ТАСДИҚЛАШ"; });
         }
     </script>
 </body>
